@@ -112,6 +112,7 @@ export const SignInForm = () => {
                   name="rememberMe"
                   onChange={formik.handleChange}
                   isChecked={formik.values.rememberMe}
+                  colorScheme="teal"
                 >
                   Remember me?
                 </Checkbox>
