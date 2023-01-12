@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <Provider store={store}>
-            <Talker duration="3000" isClosable="true" position="top" />
+            <Talker duration="2000" isClosable="true" position="top" />
             <App />
           </Provider>
         </BrowserRouter>

@@ -44,7 +44,7 @@ export const ContactForm = () => {
       );
       if (isOnList) {
         return toast({
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
           title: `${values.name} this contact already exists`,
           status: 'info',

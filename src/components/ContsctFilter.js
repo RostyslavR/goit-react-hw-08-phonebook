@@ -22,7 +22,7 @@ export const ContactFilter = () => {
       <Input
         type="text"
         name="filter"
-        placeholder="Enter something here"
+        placeholder="Type something here"
         size="lg"
         value={filter}
         variant="flushed"

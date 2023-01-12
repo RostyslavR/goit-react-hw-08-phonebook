@@ -33,7 +33,7 @@ export const SignUpForm = () => {
   const onCancel = () => {
     formik.resetForm();
     onClose();
-    navigate('..');
+    navigate('/');
   };
 
   const formik = useFormik({
@@ -42,7 +42,7 @@ export const SignUpForm = () => {
       dispatch(signUp(values));
       formik.resetForm();
       onClose();
-      navigate('..');
+      navigate('/');
     },
   });
 
