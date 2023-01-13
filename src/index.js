@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
+        <BrowserRouter basename="goit-react-hw-08-phonebook">
           <Provider store={store}>
             <Talker duration="2000" isClosable="true" position="top" />
             <App />
