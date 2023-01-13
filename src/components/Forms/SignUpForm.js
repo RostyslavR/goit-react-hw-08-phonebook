@@ -95,6 +95,7 @@ export const SignUpForm = () => {
                     type="text"
                     placeholder="Type password here"
                     required
+                    minlength="7"
                     autoComplete="off"
                     variant="flushed"
                     onChange={formik.handleChange}
@@ -122,3 +123,6 @@ export const SignUpForm = () => {
     </>
   );
 };
+
+// import validate from 'data/validate';
+// validate = { validate };
