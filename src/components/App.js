@@ -34,8 +34,6 @@ export const App = () => {
   const dispatch = useDispatch();
   const isSignedIn = useSelector(selectIsSingedIn);
 
-  console.log(isSignedIn);
-
   useEffect(() => {
     dispatch(rememberUser());
   }, [dispatch]);
