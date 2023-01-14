@@ -123,6 +123,3 @@ export const SignUpForm = () => {
     </>
   );
 };
-
-// import validate from 'data/validate';
-// validate = { validate };

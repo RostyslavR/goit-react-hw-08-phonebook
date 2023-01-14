@@ -1,9 +1,95 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { signUp, signIn, signOut, rememberUser } from 'redux/user/operations';
+
+const extraActions = [signUp, signIn, signOut, rememberUser];
+const getActions = type => extraActions.map(action => action[type]);
 
 const handlePending = state => {
   state.status = null;
   state.isLoading = true;
+};
+
+const signUpRj = (state, { payload }) => {
+  state.isLoading = false;
+  state.status = {
+    title: 'Account not created.',
+    description: payload,
+    status: 'error',
+  };
+};
+
+const signInRj = (state, { payload }) => {
+  state.isLoading = false;
+  state.status = {
+    title: 'Logged in error.',
+    description: payload,
+    status: 'error',
+  };
+};
+
+const signOutRj = (state, { payload }) => {
+  state.isLoading = false;
+  state.status = {
+    title: 'Logout error',
+    description: payload,
+    status: 'error',
+  };
+};
+
+const rmbRj = (state, { payload }) => {
+  state.data = null;
+  state.token = null;
+  state.isLoading = false;
+  state.status = null;
+  // {
+  //   title: 'The user not exist.',
+  //   description: payload,
+  //   status: 'error',
+  // };
+};
+
+const signUpFf = (state, { payload }) => {
+  state.data = payload.user;
+  state.token = payload.token;
+  state.isLoading = false;
+  state.status = {
+    title: 'Account created.',
+    description: "We've created your account for you.",
+    status: 'success',
+  };
+};
+
+const signInFf = (state, { payload }) => {
+  state.data = payload.user;
+  state.token = payload.rememberMe ? payload.token : null;
+  state.isLoading = false;
+  state.status = {
+    title: 'Logged in successfully.',
+    description: `Hello! ${payload.user.name}. You are signed in to your account.`,
+    status: 'success',
+  };
+
+};
+const signOutFf = (state, { payload }) => {
+  state.data = null;
+  state.token = null;
+  state.isLoading = false;
+  state.status = {
+    title: 'Logged out successfully.',
+    description: 'See you later )',
+    status: 'success',
+  };
+};
+
+const rmbFf = (state, { payload }) => {
+  state.data = payload.user;
+  state.isLoading = false;
+  state.status = null;
+  // {
+  //   title: 'The user is verified',
+  //   description: `Wellcome ${payload.user.name}`,
+  //   status: 'success',
+  // };
 };
 
 const initialState = {
@@ -19,91 +105,16 @@ const userSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(signUp.pending, handlePending)
-      .addCase(signUp.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.status = {
-          title: 'Account not created.',
-          description: payload,
-          status: 'error',
-        };
-      })
-      .addCase(signUp.fulfilled, (state, { payload }) => {
-        state.data = payload.user;
-        state.token = payload.token;
-        state.isLoading = false;
-        state.status = {
-          title: 'Account created.',
-          description: "We've created your account for you.",
-          status: 'success',
-        };
-      })
-
-      .addCase(signIn.pending, handlePending)
-      .addCase(signIn.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.status = {
-          title: 'Logged in error.',
-          description: payload,
-          status: 'error',
-        };
-      })
-      .addCase(signIn.fulfilled, (state, { payload }) => {
-        state.data = payload.user;
-        state.token = payload.rememberMe ? payload.token : null;
-        state.isLoading = false;
-        state.status = {
-          title: 'Logged in successfully.',
-          description: `Hello! ${payload.user.name}. You are signed in to your account.`,
-          status: 'success',
-        };
-      })
-
-      .addCase(rememberUser.pending, handlePending)
-      .addCase(rememberUser.rejected, (state, { payload }) => {
-        state.data = null;
-        state.token = null;
-        state.isLoading = false;
-        state.status = null;
-        // {
-        //   title: 'The user not exist.',
-        //   description: payload,
-        //   status: 'error',
-        // };
-      })
-      .addCase(rememberUser.fulfilled, (state, { payload }) => {
-        state.data = payload.user;
-        state.isLoading = false;
-        state.status = null;
-        // {
-        //   title: 'The user is verified',
-        //   description: `Wellcome ${payload.user.name}`,
-        //   status: 'success',
-        // };
-      })
-
-      .addCase(signOut.pending, handlePending)
-      .addCase(signOut.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.status = {
-          title: 'Logout error',
-          description: payload,
-          status: 'error',
-        };
-      })
-
-      .addCase(signOut.fulfilled, (state, { payload }) => {
-        state.data = null;
-        state.token = null;
-        state.isLoading = false;
-        state.status = {
-          title: 'Logged out successfully.',
-          description: 'See you later )',
-          status: 'success',
-        };
-      });
+      .addCase(signUp.rejected, signUpRj)
+      .addCase(signUp.fulfilled, signUpFf)
+      .addCase(signIn.rejected, signInRj)
+      .addCase(signIn.fulfilled, signInFf)
+      .addCase(signOut.rejected, signOutRj)
+      .addCase(signOut.fulfilled, signOutFf)
+      .addCase(rememberUser.rejected, rmbRj)
+      .addCase(rememberUser.fulfilled, rmbFf)
+      .addMatcher(isAnyOf(...getActions('pending')), handlePending);
   },
 });
 
 export const userReducer = userSlice.reducer;
-// 'Something is wrong ...'
