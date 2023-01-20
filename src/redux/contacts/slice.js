@@ -5,6 +5,8 @@ import {
   deleteContact,
 } from 'redux/contacts/operations';
 
+import { signOut } from 'redux/user/operations';
+
 const extraActions = [fetchContacts, addContact, deleteContact];
 
 const getActions = type => extraActions.map(action => action[type]);
@@ -15,6 +17,7 @@ const handlePending = state => {
 };
 
 const resetIsLoading = state => (state.isLoading = false);
+
 const resetState = state => {
   state.isLoading = false;
   state.status = null;
@@ -53,6 +56,10 @@ const delFf = (state, { payload }) => {
   state.contactList = state.contactList.filter(({ id }) => id !== payload);
 };
 
+const resetContacts = state => {
+  return initialState;
+};
+
 const initialState = {
   contactList: [],
   status: null,
@@ -71,6 +78,7 @@ const contactsSlice = createSlice({
       .addCase(addContact.fulfilled, addFf)
       .addCase(deleteContact.rejected, anyRj)
       .addCase(deleteContact.fulfilled, delFf)
+      .addCase(signOut.fulfilled, resetContacts)
       .addMatcher(isAnyOf(...getActions('pending')), handlePending)
       .addMatcher(isAnyOf(...getActions('rejected')), resetIsLoading)
       .addMatcher(isAnyOf(...getActions('fulfilled')), resetState);
